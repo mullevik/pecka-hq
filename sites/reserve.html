@@ -39,6 +39,11 @@
                 <div id="emailHelp" class="form-text">Email je nutný pro vytvoření rezervace. Přijde ti na něj informace o potvrzení tvojí rezervace a následně také upozornění na vyplnění stavu základny po skončení tvé události.</div>
             </div>
             <div class="mb-3">
+                <label for="phone" class="form-label">Telefonní číslo</label>
+                <input type="text" class="form-control" id="phone" placeholder="například 710 450 777" required>
+                <div id="phoneHelp" class="form-text">Telefonní číslo je nutné pro případnou možnost komunikace.</div>
+            </div>
+            <div class="mb-3">
                 <label for="group" class="form-label">Táborová skupina</label>
                 <select class="form-select" aria-label="Skupina" id="group" aria-describedby="groupHelp">
                     <option selected value="jiná">jiná</option>
@@ -128,11 +133,11 @@
             const data = {
                 "person": document.getElementById("person").value,
                 "email": document.getElementById("email").value,
+                "phone": document.getElementById("phone").value,
                 "title": document.getElementById("title").value,
                 "group": document.getElementById("group").value,
                 "admin_id": document.getElementById("admin").value,
                 "note": document.getElementById("note").value,
-                
                 "start": moment(document.getElementById("start").value + " 11:00", "DD.MM.YYYY HH:mm").toDate().toISOString(),
                 "end": moment(document.getElementById("end").value + " 13:00", "DD.MM.YYYY HH:mm").toDate().toISOString(),
             };
