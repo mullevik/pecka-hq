@@ -84,7 +84,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.cs.min.js" integrity="sha512-spbGogUIGjhZrZqmOrIHV0T+QWHv0wtguDz5eTdfH/akeQ/dyCHCkRYcOvO4zc410n7volyHNcKtzZGFX7/mlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
 
-        const API_URL = "https://script.google.com/macros/s/AKfycbz4dWGZeZ162YfBnBBe55u91U9fAc1THsE4wleg-Z45cDLOU5B7VeaKdiwjS3Jgi-6uDA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbycruz2Tbe7lg1-PD-qdzWxyL2Jhuag8P5yT21F5oPHQZDodc8ZpaxnG6dX2t9HtoSq5A/exec";
 
         $('#datepicker').datepicker({    
             language: "cs",
@@ -168,7 +168,7 @@
 
         function fetchAdmins() {
             
-            fetch(`${API_URL}?method=reserve`, {
+            fetch(`${API_URL}?method=allAdmins`, {
                 method: 'GET', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': "text/plain;charset=utf-8",
