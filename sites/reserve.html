@@ -84,7 +84,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.cs.min.js" integrity="sha512-spbGogUIGjhZrZqmOrIHV0T+QWHv0wtguDz5eTdfH/akeQ/dyCHCkRYcOvO4zc410n7volyHNcKtzZGFX7/mlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
 
-        const API_URL = "https://script.google.com/macros/s/AKfycbycruz2Tbe7lg1-PD-qdzWxyL2Jhuag8P5yT21F5oPHQZDodc8ZpaxnG6dX2t9HtoSq5A/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbyhWHySgh3a_8IIbmf9igQgBAHb8aOCxrnYh-gkSVIK4s4VDeQCvHljseejN8ShoYpwFg/exec";
 
         $('#datepicker').datepicker({    
             language: "cs",
@@ -130,7 +130,7 @@
                 "email": document.getElementById("email").value,
                 "title": document.getElementById("title").value,
                 "group": document.getElementById("group").value,
-                "admin": document.getElementById("admin").value,
+                "admin_id": document.getElementById("admin").value,
                 "note": document.getElementById("note").value,
                 
                 "start": moment(document.getElementById("start").value + " 11:00", "DD.MM.YYYY HH:mm").toDate().toISOString(),
