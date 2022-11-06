@@ -1,7 +1,9 @@
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
 </head>
+
 <body style="margin: 1em;">
 
     <div id="logs-wrapper">
@@ -11,54 +13,54 @@
             <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
         </div>
     </div>
-   
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxqqEqsfrd1FWMlE8xQYsMcCn0ut02HZUUFI4ChmJSvUzG0h8vlQJnBNHNXP9Cp6BaX6Q/exec";
-       
+        const API_URL = "https://script.google.com/macros/s/AKfycbwSorkCk32m_JIQwLc3gxZLtHfQODfT5Jw1Zv3RKbuuqAPTS4rqDFdl2Rp1u2n6cOw4uA/exec";
+
+        function buildIssueList(title, issues) {
+            const wrapper = document.createElement("div");
+            const pEl = document.createElement("p");
+            const ulEl = document.createElement("ul");
+            pEl.innerText = title;
+            for (const issue of issues) {
+                liEl = document.createElement("li");
+                liEl.innerText = `${issue[1]} (#${issue[0]})`;
+                ulEl.appendChild(liEl);
+            }
+            wrapper.appendChild(pEl);
+            wrapper.appendChild(ulEl);
+            return wrapper;
+        }
+
         function buildLog(log) {
             console.log(log);
             const wrapper = document.createElement("div");
-            wrapper.className = "alert alert-success";
+            wrapper.className = "alert alert-info";
             wrapper.style.paddingBottom = "0.1em";
-            const states = document.createElement("div");
             const description = document.createElement("p");
             const author = document.createElement("figcaption");
-            
+
             const dsc = log["description"];
 
-            description.innerText = dsc === "" ? "Žádný další popis" : `„${dsc}“`;
+            description.innerText = dsc === "" ? "Žádný popis" : `„${dsc}“`;
             author.className = "blockquote-footer";
-            author.innerText = `${log["person"]}, ${new Date(log["date"]).toLocaleDateString()}`;
-
-            const badges = {
-                "wood": "Dřevo za kuchyní", 
-                "well": "Studna v pořádku", 
-                "closed": "Vše správně zavřeno a zamčeno",
-                "fridge": "Lednice vyprázdněná", 
-                "ash": "Popel vynešen",
-                "petroleum": "Dostatek petroleje",
-            };
-            for (const [key, value] of Object.entries(badges)) {
-                const badge = document.createElement("span");
-                badge.style.marginRight = "5px";
-                badge.style.marginBottom = "5px";
-                if (key in log && log[key] === true) {
-                    badge.className = "badge bg-success";
-                    badge.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg> ' + value + " ";
-                } else {
-                    badge.className = "badge bg-danger";
-                    badge.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg> ' + value + " ";
-                }
-                states.appendChild(badge);
-            }
-
-            wrapper.appendChild(states);
+            author.innerText = `${log["submitted_by"]}, ${new Date(log["submitted_at"]).toLocaleDateString()}`;
+            
             wrapper.appendChild(description);
             wrapper.appendChild(author);
-
+            const closedIssues = log["closed_issues"];
+            if (Array.isArray(closedIssues) && closedIssues.length > 0) {
+                wrapper.appendChild(buildIssueList("Vyřešené problémy:", closedIssues));
+            }
+            const newIssues = log["new_issues"];
+            if (Array.isArray(newIssues) && newIssues.length > 0) {
+                wrapper.appendChild(buildIssueList("Nové problémy:", newIssues));
+            }
             return wrapper;
         }
 
@@ -83,7 +85,7 @@
             wrapper.appendChild(author);
             return wrapper;
         }
-        
+
         function buildStates(items) {
 
             const wrapper = document.getElementById("logs-wrapper");
@@ -103,8 +105,8 @@
         }
 
         function extractFirstDate(item) {
-            if ("date" in item) {
-                return new Date(item["date"]);
+            if ("submitted_at" in item) {
+                return new Date(item["submitted_at"]);
             } else if ("start" in item) {
                 return new Date(item["start"]);
             } else {
@@ -114,7 +116,7 @@
 
         function sortIntoTimeLine(logs, events) {
             const items = logs.concat(events);
-            
+
             items.sort((a, b) => {
                 const aDate = extractFirstDate(a);
                 const bDate = extractFirstDate(b);
@@ -129,11 +131,11 @@
             });
             return items;
         }
-        
+
         function fetchHistory() {
 
             console.log(`Fetching`);
-            
+
             Promise.all([
                 fetch(`${API_URL}?method=allLogs`).then(x => x.json()),
                 fetch(`${API_URL}?method=allEvents`).then(x => x.json()),
@@ -151,41 +153,41 @@
         fetchHistory();
         console.log("Script for history fetching loaded successfully");
 
-        // buildStates([
-        //         {
-        //             date: new Date().toDateString(),
-        //             person: 'Viktor',
-        //             wood: false,
-        //             well: false,
-        //             closed: true,
-        //             fridge: true,
-        //             ash: true,
-        //             petroleum: true,
-        //             description: ''
-        //         },
-        //         {
-        //             date: new Date().toDateString(),
-        //             person: 'Viktor',
-        //             wood: true,
-        //             well: false,
-        //             closed: true,
-        //             fridge: true,
-        //             ash: true,
-        //         },
-        //         {
-        //             title: 'Testovací událost',
-        //             group: 'První běh',
-        //             person: 'Viktor',
-        //             start: new Date().toDateString(),
-        //             end: new Date().toDateString()
-        //         },
-        //         {
-        //             title: 'Hm',
-        //             group: '5. běh',
-        //             person: 'Manuel',
-        //             start: new Date().toDateString(),
-        //             end: new Date().toDateString()
-        //         }]);
-
+        // Test template building
+        // buildStates([{
+        //     submitted_at: "2022-10-31T23:00:00.000Z",
+        //     submitted_by: 'Viktor',
+        //     description: 'nezbyl už žádný petrolej',
+        //     closed_issues: [[2, "Issue 2"]],
+        //     new_issues: [[3, "Issue 3"], [4, "Issue 4"]]
+        // },
+        // {
+        //     submitted_at: "2022-10-31T23:00:00.000Z",
+        //     submitted_by: 'Tester',
+        //     description: 'testing description',
+        //     closed_issues: [],
+        //     new_issues: []
+        // },
+        // {
+        //     submitted_at: "2022-10-31T23:00:00.000Z",
+        //     submitted_by: 'Tester',
+        //     description: 'testing description',
+        //     closed_issues: [],
+        //     new_issues: []
+        // },
+        // {
+        //     submitted_at: "2022-10-31T23:00:00.000Z",
+        //     submitted_by: 'Tester',
+        //     description: 'testing description',
+        //     closed_issues: [],
+        //     new_issues: [[5, "Issue 5"]]
+        // },
+        // {
+        //     submitted_at: "2022-10-31T23:00:00.000Z",
+        //     submitted_by: 'Tester',
+        //     description: 'testing description',
+        //     closed_issues: [[4, "Issue"]],
+        //     new_issues: []
+        // }]);
     </script>
 </body>
